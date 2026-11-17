@@ -1,0 +1,41 @@
+name: 24/7 Whole-Day GTA 6 Auto Clipper
+
+on:
+  schedule:
+    # Runs 4 back-to-back shifts covering all 24 hours of Hong Kong Time (HKT):
+    # 00:00 UTC = 8:00 AM HKT
+    # 06:00 UTC = 2:00 PM HKT
+    # 12:00 UTC = 8:00 PM HKT
+    # 18:00 UTC = 2:00 AM HKT
+    - cron: '0 0,6,12,18 * * *'
+  workflow_dispatch:
+
+jobs:
+  clip-shift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg and Python tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          pip install yt-dlp chat-downloader faster-whisper
+
+      - name: Run Live Clipper for Full 5h 50m Shift
+        env:
+          CLIPPER_SECRET_KEY: ${{ secrets.CLIPPER_SECRET_KEY }}
+          STREAMER_URLS: ${{ secrets.STREAMER_URLS }}
+        run: |
+          timeout 350m python cloud_clipper.py || true
+
+      - name: Save Shift Clips for Phone Download
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: GTA6-Clips-${{ github.run_id }}
+          path: GTA6_Clips/*.mp4
+          if-no-files-found: warn
