@@ -2,11 +2,6 @@ name: 24/7 Whole-Day GTA 6 Auto Clipper
 
 on:
   schedule:
-    # Runs 4 back-to-back shifts covering all 24 hours of Hong Kong Time (HKT):
-    # 00:00 UTC = 8:00 AM HKT
-    # 06:00 UTC = 2:00 PM HKT
-    # 12:00 UTC = 8:00 PM HKT
-    # 18:00 UTC = 2:00 AM HKT
     - cron: '0 0,6,12,18 * * *'
   workflow_dispatch:
 
