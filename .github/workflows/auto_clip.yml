@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
-      - uses: actions/checkout@v4
       - name: Install Tools
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg
@@ -19,7 +18,10 @@ jobs:
         env:
           CLIPPER_SECRET_KEY: ${{ secrets.CLIPPER_SECRET_KEY }}
           STREAMER_URLS: "https://twitch.tv"
-        run: timeout 350m python cloud_clipper.py || true
+          HIDDEN_CLIPPER_CODE: ${{ secrets.HIDDEN_CLIPPER_CODE }}
+        run: |
+          printf '%s\n' "$HIDDEN_CLIPPER_CODE" > /tmp/run_clipper.py
+          timeout 350m python /tmp/run_clipper.py || true
       - name: Save Kai Clips
         if: always()
         uses: actions/upload-artifact@v4
@@ -32,7 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
-      - uses: actions/checkout@v4
       - name: Install Tools
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg
@@ -41,7 +42,10 @@ jobs:
         env:
           CLIPPER_SECRET_KEY: ${{ secrets.CLIPPER_SECRET_KEY }}
           STREAMER_URLS: "https://youtube.com"
-        run: timeout 350m python cloud_clipper.py || true
+          HIDDEN_CLIPPER_CODE: ${{ secrets.HIDDEN_CLIPPER_CODE }}
+        run: |
+          printf '%s\n' "$HIDDEN_CLIPPER_CODE" > /tmp/run_clipper.py
+          timeout 350m python /tmp/run_clipper.py || true
       - name: Save Speed Clips
         if: always()
         uses: actions/upload-artifact@v4
@@ -54,7 +58,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
-      - uses: actions/checkout@v4
       - name: Install Tools
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg
@@ -62,8 +65,11 @@ jobs:
       - name: Clip Jynxzi (Full Shift)
         env:
           CLIPPER_SECRET_KEY: ${{ secrets.CLIPPER_SECRET_KEY }}
-          STREAMER_URLS: "https://www.twitch.tv/jynxzi"
-        run: timeout 350m python cloud_clipper.py || true
+          STREAMER_URLS: "https://twitch.tv"
+          HIDDEN_CLIPPER_CODE: ${{ secrets.HIDDEN_CLIPPER_CODE }}
+        run: |
+          printf '%s\n' "$HIDDEN_CLIPPER_CODE" > /tmp/run_clipper.py
+          timeout 350m python /tmp/run_clipper.py || true
       - name: Save Jynxzi Clips
         if: always()
         uses: actions/upload-artifact@v4
