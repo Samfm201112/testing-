@@ -11,10 +11,13 @@ jobs:
     timeout-minutes: 185
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install Tools & Fonts
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
-          pip install yt-dlp chat-downloader faster-whisper "av<14"
+          pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Kai Cenat (3h Shift)
         run: timeout 172m python cloud_clipper.py "https://twitch.tv/kaicenat" || true
       - name: Save Kai Clips
@@ -30,10 +33,13 @@ jobs:
     timeout-minutes: 185
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install Tools & Fonts
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
-          pip install yt-dlp chat-downloader faster-whisper "av<14"
+          pip install yt-dlp chat-downloader faster-whisper
       - name: Clip IShowSpeed (3h Shift)
         env:
           YT_COOKIES: ${{ secrets.YT_COOKIES }}
@@ -53,10 +59,13 @@ jobs:
     timeout-minutes: 185
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install Tools & Fonts
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
-          pip install yt-dlp chat-downloader faster-whisper "av<14"
+          pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Jynxzi (3h Shift)
         run: timeout 172m python cloud_clipper.py "https://twitch.tv/jynxzi" || true
       - name: Save Jynxzi Clips
