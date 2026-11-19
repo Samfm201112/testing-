@@ -2,11 +2,6 @@ name: 24/7 3-Hour Shifts GTA 6 Clipper
 
 on:
   schedule:
-    # Runs 8 back-to-back 3-hour shifts covering all 24 hours of Hong Kong Time (HKT):
-    # 00:00 UTC = 8:00 AM HKT  | 03:00 UTC = 11:00 AM HKT
-    # 06:00 UTC = 2:00 PM HKT  | 09:00 UTC = 5:00 PM HKT
-    # 12:00 UTC = 8:00 PM HKT  | 15:00 UTC = 11:00 PM HKT
-    # 18:00 UTC = 2:00 AM HKT  | 21:00 UTC = 5:00 AM HKT
     - cron: '0 0,3,6,9,12,15,18,21 * * *'
   workflow_dispatch:
 
@@ -21,7 +16,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Kai Cenat (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://twitch.tv/kaicenat" || true
+        run: timeout 172m python cloud_clipper.py "https://twitch.tv" || true
       - name: Save Kai Clips
         if: always()
         uses: actions/upload-artifact@v5
@@ -30,7 +25,7 @@ jobs:
           path: GTA6_Clips/*.mp4
           if-no-files-found: warn
 
-clip-speed:
+  clip-speed:
     runs-on: ubuntu-latest
     timeout-minutes: 185
     steps:
@@ -63,7 +58,7 @@ clip-speed:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Jynxzi (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://twitch.tv/jynxzi" || true
+        run: timeout 172m python cloud_clipper.py "https://twitch.tv" || true
       - name: Save Jynxzi Clips
         if: always()
         uses: actions/upload-artifact@v5
