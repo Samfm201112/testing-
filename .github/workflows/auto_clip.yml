@@ -30,7 +30,7 @@ jobs:
           path: GTA6_Clips/*.mp4
           if-no-files-found: warn
 
-  clip-speed:
+clip-speed:
     runs-on: ubuntu-latest
     timeout-minutes: 185
     steps:
@@ -40,7 +40,11 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip IShowSpeed (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://youtube.com/@IShowSpeed/live" || true
+        env:
+          YT_COOKIES: ${{ secrets.YT_COOKIES }}
+        run: |
+          printf '%s\n' "$YT_COOKIES" > /tmp/cookies.txt
+          timeout 172m python cloud_clipper.py "https://youtube.com" || true
       - name: Save Speed Clips
         if: always()
         uses: actions/upload-artifact@v5
