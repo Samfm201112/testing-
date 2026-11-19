@@ -11,9 +11,6 @@ from faster_whisper import WhisperModel
 SECRET_KEY = os.environ.get("CLIPPER_SECRET_KEY", "").strip()
 RAW_URLS = os.environ.get("STREAMER_URLS", "").strip()
 
-if not SECRET_KEY or not RAW_URLS:
-    print("[X] ACCESS DENIED.")
-    sys.exit(1)
 
 STREAMERS = [u.strip() for u in RAW_URLS.split(",") if u.strip()]
 WATERMARK_TEXT = "@SL_gta_6"
