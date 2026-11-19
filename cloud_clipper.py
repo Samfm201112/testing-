@@ -8,7 +8,6 @@ from collections import deque
 from chat_downloader import ChatDownloader
 from faster_whisper import WhisperModel
 
-# Read streamer URL passed by the workflow shift (defaults to Kai Cenat if run standalone)
 STREAM_URL = sys.argv[1].strip() if len(sys.argv) > 1 else "https://twitch.tv"
 WATERMARK_TEXT = "SL_gta6"
 
@@ -32,15 +31,15 @@ clips_saved = 0
 def find_live_stream(url):
     while True:
         try:
-            cmd = [
-                "yt-dlp",
-                "--no-warnings",
-                "--extractor-args", "youtube:player_client=android,web",
+            cmd = ["yt-dlp", "--no-warnings"]
+            if os.path.exists("/tmp/cookies.txt"):
+                cmd.extend(["--cookies", "/tmp/cookies.txt"])
+            cmd.extend([
                 "-f", "best[height<=1080]",
                 "--print", "webpage_url",
                 "--print", "urls",
                 url
-            ]
+            ])
             out = subprocess.check_output(cmd, stderr=subprocess.PIPE, text=True).strip().splitlines()
             if len(out) >= 2 and out[0].startswith("http"):
                 resolved_page_url = out[0].strip()
@@ -78,6 +77,7 @@ def record_rolling_buffer(hls_url, stop_event):
                 except OSError:
                     pass
         time.sleep(5)
+    print("[!] Video buffer stopped.", flush=True)
     stop_event.set()
 
 
