@@ -11,7 +11,7 @@ from faster_whisper import WhisperModel
 STREAM_URL = sys.argv[1].strip() if len(sys.argv) > 1 else "https://twitch.tv"
 WATERMARK_TEXT = "SL_gta6"
 
-OUTPUT_DIR = "GTA6_Clips"
+OUTPUT_DIR = os.path.abspath("GTA6_Clips")
 BUFFER_DIR = "live_buffer"
 SEGMENT_SECONDS = 15
 KEEP_SEGMENTS = 8
