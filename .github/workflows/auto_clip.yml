@@ -45,7 +45,7 @@ jobs:
           YT_COOKIES: ${{ secrets.YT_COOKIES }}
         run: |
           printf '%s\n' "$YT_COOKIES" > /tmp/cookies.txt
-          timeout 172m python cloud_clipper.py "https://youtube.com/@IShowSpeed/live" || true
+          timeout 172m python cloud_clipper.py "https://twitch.tv/ishowspeed" || true
       - name: Save Speed Clips
         if: always()
         uses: actions/upload-artifact@v5
