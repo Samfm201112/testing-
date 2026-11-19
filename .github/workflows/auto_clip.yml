@@ -21,7 +21,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Kai Cenat (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://twitch.tv" || true
+        run: timeout 172m python cloud_clipper.py "https://twitch.tv/kaicenat" || true
       - name: Save Kai Clips
         if: always()
         uses: actions/upload-artifact@v5
@@ -40,7 +40,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip IShowSpeed (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://youtube.com" || true
+        run: timeout 172m python cloud_clipper.py "https://youtube.com/@IShowSpeed/live" || true
       - name: Save Speed Clips
         if: always()
         uses: actions/upload-artifact@v5
@@ -59,7 +59,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Jynxzi (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://twitch.tv" || true
+        run: timeout 172m python cloud_clipper.py "https://twitch.tv/jynxzi" || true
       - name: Save Jynxzi Clips
         if: always()
         uses: actions/upload-artifact@v5
