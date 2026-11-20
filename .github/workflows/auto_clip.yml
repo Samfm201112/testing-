@@ -19,7 +19,10 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Kai Cenat (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://twitch.tv/kaicenat" || true
+        env:
+          # Format: x_pct,y_pct,w_pct,h_pct (bottom-left default; adjust if top-left: 0.01,0.02,0.24,0.28)
+          CAM_BOX: "0.01,0.68,0.25,0.30"
+        run: python cloud_clipper.py "https://twitch.tv/kaicenat"
       - name: Save Kai Clips
         if: always()
         uses: actions/upload-artifact@v5
@@ -38,14 +41,16 @@ jobs:
           python-version: '3.11'
       - name: Install Tools & Fonts
         run: |
-          sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
+          sudo apt-get update && sudo-apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip IShowSpeed (3h Shift)
         env:
           YT_COOKIES: ${{ secrets.YT_COOKIES }}
+          # Bottom-left facecam (use 0.74,0.68,0.25,0.30 if he puts cam bottom-right)
+          CAM_BOX: "0.01,0.68,0.25,0.30"
         run: |
           printf '%s\n' "$YT_COOKIES" > /tmp/cookies.txt
-          timeout 172m python cloud_clipper.py "https://twitch.tv/ishowspeed" || true
+          python cloud_clipper.py "https://www.youtube.com/@IShowSpeed/live"
       - name: Save Speed Clips
         if: always()
         uses: actions/upload-artifact@v5
@@ -67,7 +72,10 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip Jynxzi (3h Shift)
-        run: timeout 172m python cloud_clipper.py "https://twitch.tv/jynxzi" || true
+        env:
+          # Top-left facecam (use 0.01,0.68,0.24,0.28 for bottom-left)
+          CAM_BOX: "0.01,0.02,0.24,0.28"
+        run: python cloud_clipper.py "https://twitch.tv/jynxzi"
       - name: Save Jynxzi Clips
         if: always()
         uses: actions/upload-artifact@v5
