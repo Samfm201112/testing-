@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install Tools & Fonts
+- name: Install Tools & Fonts
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
@@ -39,9 +39,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install Tools & Fonts
+- name: Install Tools & Fonts
         run: |
-          sudo apt-get update && sudo-apt-get install -y ffmpeg fontconfig fonts-dejavu-core
+          sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
       - name: Clip IShowSpeed (3h Shift)
         env:
@@ -67,7 +67,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install Tools & Fonts
+- name: Install Tools & Fonts
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg fontconfig fonts-dejavu-core
           pip install yt-dlp chat-downloader faster-whisper
