@@ -21,8 +21,11 @@ CHAT_WINDOW_SEC = 10
 SPIKE_THRESHOLD = 80
 COOLDOWN_SEC = 60
 MAX_CLIPS_PER_SHIFT = 40
-MAX_SHIFT_SECONDS = 170 * 60  # Exit cleanly before GitHub's 185m timeout
-CAM_COORDS = (20, 20, 420, 280)
+MAX_SHIFT_SECONDS = 170 * 60
+
+# Read normalized facecam box from env: "x_pct,y_pct,w_pct,h_pct"
+cam_parts = [float(v) for v in os.getenv("CAM_BOX", "0.01,0.68,0.25,0.30").split(",")]
+CAM_X_PCT, CAM_Y_PCT, CAM_W_PCT, CAM_H_PCT = cam_parts
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(BUFFER_DIR, exist_ok=True)
@@ -174,9 +177,10 @@ def create_viral_clip(whisper_model, trigger_reason):
             f"borderw=2:bordercolor=black@0.50:x=(w-text_w)/2:y=645"
         )
 
-        cam_x, cam_y, cam_w, cam_h = CAM_COORDS
+        # Resolution-independent facecam crop + 1080x672 top / 1080x1248 bottom split
         filter_complex = (
-            f"[0:v]crop={cam_w}:{cam_h}:{cam_x}:{cam_y},scale=1080:672:force_original_aspect_ratio=increase,crop=1080:672[cam];"
+            f"[0:v]crop=iw*{CAM_W_PCT}:ih*{CAM_H_PCT}:iw*{CAM_X_PCT}:ih*{CAM_Y_PCT},"
+            f"scale=1080:672:force_original_aspect_ratio=increase,crop=1080:672[cam];"
             f"[0:v]crop=ih*(1080/1248):ih,scale=1080:1248[game];"
             f"[cam][game]vstack=inputs=2[stacked];"
             f"[stacked]{watermark_filter}[watermarked];"
@@ -230,7 +234,7 @@ def monitor_chat(url, whisper_model, stop_event):
 
 
 if __name__ == "__main__":
-    print(f"[*] Initializing Whisper AI for {STREAM_URL}...", flush=True)
+    print(f"[*] Initializing Whisper AI for {STREAM_URL} (CAM_BOX={cam_parts})...", flush=True)
     whisper_model = WhisperModel("tiny.en", device="cpu", compute_type="int8")
 
     while shift_time_remaining() > 120 and clips_saved < MAX_CLIPS_PER_SHIFT:
@@ -248,6 +252,5 @@ if __name__ == "__main__":
         buf_thread.join(timeout=10)
         time.sleep(10)
 
-    # Wait for any in-progress render to finish before exiting
     with clip_lock:
         print(f"[✓] Shift complete. Total clips saved: {clips_saved}", flush=True)
