@@ -48,7 +48,7 @@ jobs:
           CAM_BOX: "0.01,0.68,0.25,0.30"
         run: |
           printf '%s\n' "$YT_COOKIES" > /tmp/cookies.txt
-          python cloud_clipper.py "https://www.youtube.com/@IShowSpeed/live"
+          python cloud_clipper.py "https://twitch.tv/ishowspeed"
       - name: Save Speed Clips
         if: always()
         uses: actions/upload-artifact@v5
